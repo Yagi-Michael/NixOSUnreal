@@ -21,6 +21,8 @@ NixOS FHS flake/develop env for Unreal Engine.
      `chmod +x Setup.sh GenerateProjectFiles.sh Engine/Binaries/DotNET/GitDependencies/linux-x64/GitDependencies`
 7. `./Setup.sh`
 8. `./GenerateProjectFiles.sh`
+   - **Note:** You may need to fix permissions on engine build scripts first:
+     `find Engine/Build -name "*.sh" -exec chmod +x {} +`
 9. `make -j1` we must use `-j1`
 10. Once compiled you will find the binary at `Engine/Binaries/Linux/UnrealEditor`
 
