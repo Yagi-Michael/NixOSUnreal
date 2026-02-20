@@ -1,5 +1,5 @@
 {
-  description = "Adrastie Unreal Engine 5 Binary NixOS FHS Dev Env";
+  description = "gUbGuuB Unreal Engine 5 Binary NixOS FHS Dev Env";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";

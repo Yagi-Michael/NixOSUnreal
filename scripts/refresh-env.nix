@@ -5,7 +5,7 @@ pkgs.writeScriptBin "refresh-env" ''
   ${lib.banners.colorTheWorld}
   clear
   print_base "╔══LOVE♥IS♥LOVE═══════════════════════════════════════════╗"
-  print_base "║''${BRED}♥♥♥♥♥♥''${NC}Adrastie NixOS Unreal Engine 5 Binary Dev Env''${BRED}♥♥♥♥♥♥''${NC}║"
+  print_base "║''${BRED}♥♥♥♥♥♥''${NC}gUbGuuB NixOS Unreal Engine 5 Binary Dev Env''${BRED}♥♥♥♥♥♥''${NC}║"
   print_base "╠═════════════════════════════════════════════════════════╣"
   print_base "║To run Unreal Engine:                                    ║"
   print_base "║''${BYELLOW}  run-unreal''${NC} [optional_path] [args...]                   ║"
