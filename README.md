@@ -36,9 +36,22 @@ UE
 └── GenerateProjectFiles.sh
 ```
 
+## Rider IDE Setup
+
+When using JetBrains Rider on Linux, it may auto-detect the `.git` directory and default the VCS integration to Git. If your project uses Perforce:
+
+1. Go to **Settings > Version Control > Directory Mappings**
+2. Change the VCS for your project root (e.g. `/work/ascent`) from **Git** to **Perforce**
+3. Go to **Settings > Version Control > Perforce** and set:
+   - **Server (Port):** `ssl:genun.helixcore.io:1666`
+   - **User:** your Perforce username
+   - **Workspace (Client):** your Linux workspace name
+   - **Path to P4 executable:** `/etc/profiles/per-user/<your-user>/bin/p4`
+4. Click **Test Connection** to verify
+
 ---
 
-Warning: If you are using Wayland with the Unreal Engine, the Popup keyboard input may not work at all. To find more information and an unsecured but unavoidable workaround, run “kde-wayland-settings”.
+Warning: If you are using Wayland with the Unreal Engine, the Popup keyboard input may not work at all. To find more information and an unsecured but unavoidable workaround, run "kde-wayland-settings".
 
 
 ---
