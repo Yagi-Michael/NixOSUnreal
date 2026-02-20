@@ -47,19 +47,19 @@
 
      # Banner layout
      print_banner() {
-       echo -e "''${BGREY}════════════════════════ ''${BRED}♥♥♥''${NC}''${YELLOW} $1 ''${NC}''${BRED}♥♥♥''${NC} ''${BGREY}════════════════════════''${NC}"
+       echo -e "''${BGREY}════════════════════════ ''${BRED}🐸🐸🐸''${NC}''${YELLOW} $1 ''${NC}''${BRED}🐸🐸🐸''${NC} ''${BGREY}════════════════════════''${NC}"
      }
 
      # Banner layout
      print_core() {
-       echo -e "''${BRED}♥♥♥''${NC} $1 ''${NC}''${BRED}♥♥♥''${NC}"
+       echo -e "''${BRED}🐸🐸🐸''${NC} $1 ''${NC}''${BRED}🐸🐸🐸''${NC}"
      }
 
 
 
      # Info layout
      print_info() {
-       echo -e "''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${NC}''${YELLOW}''${BRED}!''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}♥''${NC}''${YELLOW} $1 ''${NC}''${BRED}♥''${NC}''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${NC}''${YELLOW}''${NC}"
+       echo -e "''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${NC}''${YELLOW}''${BRED}!''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}🐸''${NC}''${YELLOW} $1 ''${NC}''${BRED}🐸''${NC}''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${BYELLOW}!''${BRED}!''${NC}''${YELLOW}''${NC}"
      }
 
      # Success layout

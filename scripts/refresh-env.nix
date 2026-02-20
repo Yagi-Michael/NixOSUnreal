@@ -4,8 +4,8 @@ pkgs.writeScriptBin "refresh-env" ''
   #!${pkgs.stdenv.shell}
   ${lib.banners.colorTheWorld}
   clear
-  print_base "╔══LOVE♥IS♥LOVE═══════════════════════════════════════════╗"
-  print_base "║''${BRED}♥♥♥♥♥♥''${NC}gUbGuuB NixOS Unreal Engine 5 Binary Dev Env''${BRED}♥♥♥♥♥♥''${NC}║"
+  print_base "╔══LARS👑IS👑LIFE═════════════════════════════════════════╗"
+  print_base "║🐸👑🐸gUbGuuB NixOS Unreal Engine 5 Binary Dev Env🐸👑🐸║"
   print_base "╠═════════════════════════════════════════════════════════╣"
   print_base "║To run Unreal Engine:                                    ║"
   print_base "║''${BYELLOW}  run-unreal''${NC} [optional_path] [args...]                   ║"
@@ -30,7 +30,7 @@ pkgs.writeScriptBin "refresh-env" ''
   print_base "║                                                         ║"
   print_base "║To display this tooltips:                                ║"
   print_base "║''${YELLOW}  refresh-env''${NC}                                            ║"
-  print_base "╚═════════════════════════════════════MAKE♥GAMES♥NOT♥WAR══╝"
+  print_base "╚═══════════════════════════════════════LIVE🐸LOVE🐸LARS══╝"
   print_error "            !!! IMPORTANT SECURITY NOTICE FOR WAYLAND !!!                                "
   print_warning "- For keyboard input to work in Unreal Engine popups under KDE/Wayland,            "
   print_warning "- you need to disable an important and great Wayland security setting :(           "
