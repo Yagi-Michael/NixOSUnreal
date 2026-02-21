@@ -53,6 +53,7 @@ in {
     dbus
     bash
     coreutils
+    p4
     # Libs required to run compiled version
     libgbm
     expat
