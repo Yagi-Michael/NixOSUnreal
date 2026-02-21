@@ -93,7 +93,20 @@ When using JetBrains Rider on Linux, it may auto-detect the `.git` directory and
 
 `run-unreal` automatically applies these flags: `-ansimalloc -reducethreadusage -limitedmemorypool`
 
-When debugging through Rider, add these same flags manually to **Run/Debug Configuration > Program arguments**, since Rider launches its own UE process.
+These prevent mimalloc-related crashes and reduce memory pressure during debugging. However, IDEs launch their own UE process, so you must add the flags there too.
+
+### Rider
+
+1. **Run > Edit Configurations...**
+2. Select your Uproject configuration (e.g. **AscentRivals**)
+3. In the **Optional arguments** field, add: `-ansimalloc -reducethreadusage -limitedmemorypool`
+4. Click **Apply**
+
+### Zed / Other IDEs
+
+Any IDE or tool that launches UnrealEditor directly will need these same flags passed as program arguments. Consult your IDE's run/debug configuration for where to set them.
+
+### Memory Limits
 
 A cgroup memory limit wrapper is available in `scripts/unreal/run.nix` (commented out) if NixOS earlyoom/OOM isn't catching runaway memory fast enough.
 
