@@ -56,6 +56,9 @@ run-unreal                   # launch UnrealEditor (auto-detects Vulkan/OpenGL)
 | `kill-unreal` | Kill running Unreal processes |
 | `kde-wayland-settings` | Wayland keyboard input workaround info |
 | `refresh-env` | Re-detect GPU and refresh environment variables |
+| `toggle-engine-debug-symbols` | Move engine `.debug` files in/out of `debug-stash/` to control LLDB memory usage |
+| `gen-compile-commands` | Generate `compile_commands.json` from UBT for clangd intellisense |
+| `run-zed` | Launch Zed editor inside the FHS environment |
 
 ## Perforce on NixOS
 
@@ -102,13 +105,69 @@ These prevent mimalloc-related crashes and reduce memory pressure during debuggi
 3. In the **Optional arguments** field, add: `-ansimalloc -reducethreadusage -limitedmemorypool`
 4. Click **Apply**
 
-### Zed / Other IDEs
+### Zed
+
+Debug flags are configured in `.zed/debug.json` (launch config `args` field). The existing launch config already includes the project path — add the stability flags there:
+
+```json
+"args": ["/work/ascent/UE/AscentRivals/AscentRivals.uproject", "-ansimalloc", "-reducethreadusage", "-limitedmemorypool"]
+```
+
+### Other IDEs
 
 Any IDE or tool that launches UnrealEditor directly will need these same flags passed as program arguments. Consult your IDE's run/debug configuration for where to set them.
 
 ### Memory Limits
 
 A cgroup memory limit wrapper is available in `scripts/unreal/run.nix` (commented out) if NixOS earlyoom/OOM isn't catching runaway memory fast enough.
+
+## Zed IDE Setup (WIP)
+
+Zed uses clangd for C++ intellisense, which needs a `compile_commands.json` generated from UnrealBuildTool.
+
+### First-Time Setup
+
+```bash
+cd UE/flake && nix develop
+unreal-fhs
+gen-compile-commands    # generates UE/compile_commands.json (takes a few minutes)
+```
+
+Then launch with:
+
+```bash
+run-zed                 # launches Zed inside FHS so clangd resolves all paths
+```
+
+Project-level settings live in `.zed/settings.json` (already configured to point clangd at `UE/compile_commands.json`). Debug configs are in `.zed/debug.json` with CodeLLDB attach/launch targets and LLDB lazy symbol loading enabled.
+
+Re-run `gen-compile-commands` after adding new source files or modules so clangd picks them up.
+
+### Zed vs Rider — When to Use Which
+
+| | Zed | Rider |
+|---|---|---|
+| **Strengths** | Fast startup, low RAM (~500MB vs Rider's 4-8GB), responsive on large codebases, native Linux feel, keyboard-driven workflow | Full UE integration (Blueprints, asset browser, UBT build), mature debugger UI, Perforce UI, refactoring tools |
+| **Best for** | C++ editing & navigation, quick code changes, lightweight debugging sessions, working alongside UE editor | Full project work (code + assets + Blueprints), heavy debugging with watch/conditional breakpoints, Perforce operations |
+| **Weaknesses** | No Blueprint support, no UE asset integration, clangd can be slow on initial index, less polished debugger UI | Heavy RAM usage (4-8GB+), slow startup, can feel sluggish with large engine codebase |
+| **Debugging** | CodeLLDB (DAP) — functional but minimal UI | Full LLDB integration with inline values, conditional breakpoints, memory views |
+| **Intellisense** | clangd (needs `gen-compile-commands` first, re-run when adding files) | Built-in via ReSharper C++ (works automatically with `.uproject`) |
+
+**Recommendation:** Use Zed for day-to-day C++ editing when you mostly need fast navigation and quick edits. Switch to Rider for debugging sessions that need conditional breakpoints, Blueprint work, or Perforce operations.
+
+### Claude Code Integration
+
+A PostToolUse hook (`.claude/hooks/open-in-zed.sh`) automatically opens files in Zed as Claude Code edits them. Configured in `.claude/settings.local.json` (not committed — local machine preference).
+
+**Workflow:**
+1. `run-zed` to launch Zed
+2. Split the editor right (`Ctrl+K, Ctrl+\`), click in the right pane
+3. `Alt+C` to spawn Claude Code in the bottom terminal panel
+4. As Claude edits files, they open in the last-focused editor pane
+
+**Limitation:** Zed's CLI (`zeditor -a`) has no `--pane` flag to target a specific split pane. Files open in whichever pane was last focused. Click the right pane to redirect. Zed is open source (MIT, Rust) — adding a `--pane` flag is a future contribution opportunity. Relevant code: `crates/cli/src/main.rs`, `crates/workspace/src/pane.rs`, `crates/zed/src/open_listener.rs`.
+
+**Zed tasks** (`.zed/tasks.json`): `Alt+C` runs Claude Code, "Enter FHS" available from command palette.
 
 ## Known Issues
 

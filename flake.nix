@@ -34,6 +34,9 @@ devShells.${system}.default = pkgs.mkShell {
     scripts.kdeSettingsScript
     scripts.killUnrealScript
     scripts.refreshEnvScript
+    scripts.toggleEngineDebugSymbolsScript
+    scripts.zedScript
+    scripts.genCompileCommandsScript
   ];
 
   shellHook = ''

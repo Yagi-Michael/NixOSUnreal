@@ -47,6 +47,7 @@ in {
     clang_16
     llvmPackages_16.libcxx
     lld_16
+    clang-tools
     gnumake
     cairo
     curl

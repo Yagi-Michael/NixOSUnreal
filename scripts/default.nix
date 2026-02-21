@@ -10,6 +10,9 @@ let
   unrealScript = import ./unreal/run.nix { inherit pkgs lib utils; };
   riderScript = import ./unreal/rider.nix { inherit pkgs lib utils; };
   kdeSettingsScript = import ./unreal/kde-settings.nix { inherit pkgs lib utils; };
+  toggleEngineDebugSymbolsScript = import ./unreal/toggle-engine-debug-symbols.nix { inherit pkgs lib utils; };
+  zedScript = import ./unreal/zed.nix { inherit pkgs lib utils; };
+  genCompileCommandsScript = import ./unreal/gen-compile-commands.nix { inherit pkgs lib utils; };
 in {
   inherit
     killUnrealScript
@@ -19,5 +22,8 @@ in {
     unrealFHSWrapper
     unrealScript
     riderScript
-    kdeSettingsScript;
+    kdeSettingsScript
+    toggleEngineDebugSymbolsScript
+    zedScript
+    genCompileCommandsScript;
 }
