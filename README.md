@@ -139,7 +139,7 @@ Then launch with:
 run-zed                 # launches Zed inside FHS so clangd resolves all paths
 ```
 
-Project-level settings live in `.zed/settings.json` (already configured to point clangd at `UE/compile_commands.json`). Debug configs are in `.zed/debug.json` with CodeLLDB attach/launch targets and LLDB lazy symbol loading enabled.
+Project-level settings live in `.zed/settings.json` (already configured to point clangd at `UE/compile_commands.json`). Debug configs are in `.zed/debug.json` with CodeLLDB attach/launch targets and LLDB symbol preloading enabled.
 
 Re-run `gen-compile-commands` after adding new source files or modules so clangd picks them up.
 
