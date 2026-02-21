@@ -115,6 +115,10 @@ in
     export MESA_GL_VERSION_OVERRIDE=4.5
     export __GL_SHADER_DISK_CACHE=1
     export __GL_SHADER_DISK_CACHE_PATH="$HOME/.cache/unreal-shaders"
+    export __GL_SHADER_DISK_CACHE_SKIP_CLEANUP=1
+
+    # GPU railguards - reduce VRAM pressure and prevent GPU hangs during debugging
+    export __GL_MaxFramesAllowed=1
 
     # Create shader cache folder if needed
     if [ ! -d "$HOME/.cache/unreal-shaders" ]; then

@@ -48,11 +48,15 @@
        RENDER_OPTION="-vulkan"
      fi
 
-     # Trying to force X11 to fix popup issues
-     FIXPARAM="-AllowStandaloneRenderThread=false"
-     FIXPARAM="$FIXPARAM -ForceFrontendRenderThread"
+     # UE stability flags for debugging
+     UE_FLAGS="-ansimalloc -reducethreadusage -limitedmemorypool -nosplash -nocrashreportdialog"
+
+     # Memory cgroup railguard - uncomment if OOM killer isn't catching it fast enough
+     # MEMORY_LIMIT="24G"
+     # SWAP_LIMIT="2G"
+     # systemd-run --user --scope -p MemoryMax="$MEMORY_LIMIT" -p MemorySwapMax="$SWAP_LIMIT" --
 
      # Now we try to run Unreal Engine
      print_warning "Starting Unreal Engine Editor with $RENDER_OPTION"
-     ${unrealFHSWrapper}/bin/unreal-fhs "cd '$UE_DIR' && ./'$UE_BIN' $RENDER_OPTION $FIXPARAM -nosplash -nocrashreportdialog $*"
+     ${unrealFHSWrapper}/bin/unreal-fhs "cd '$UE_DIR' && ./'$UE_BIN' $RENDER_OPTION $UE_FLAGS $*"
    ''
