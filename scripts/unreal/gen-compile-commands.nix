@@ -8,6 +8,11 @@ pkgs.writeScriptBin "gen-compile-commands" ''
   UBT="/work/ascent/UE/Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll"
   OUTPUT_DIR="/work/ascent/UE"
 
+  if ! command -v dotnet &> /dev/null; then
+    print_error "dotnet not found — run this inside unreal-fhs"
+    exit 1
+  fi
+
   if [ ! -f "$UBT" ]; then
     print_error "UnrealBuildTool not found: $UBT"
     print_error "Build the engine first (make -j1)"
@@ -27,10 +32,10 @@ pkgs.writeScriptBin "gen-compile-commands" ''
   cd /work/ascent/UE
   dotnet "$UBT" \
     -Mode=GenerateClangDatabase \
-    -TargetName=AscentRivalsEditor \
-    -Platform=Linux \
-    -Configuration=Development \
     -Project="$PROJECT" \
+    AscentRivalsEditor \
+    Linux \
+    Development \
     -OutputDir="$OUTPUT_DIR"
 
   if [ -f "$OUTPUT_DIR/compile_commands.json" ]; then
