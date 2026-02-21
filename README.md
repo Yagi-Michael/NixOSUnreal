@@ -36,6 +36,46 @@ UE
 └── GenerateProjectFiles.sh
 ```
 
+## Daily Workflow
+
+```bash
+cd UE/flake && nix develop   # enter nix shell (sets up PATH, env vars)
+unreal-fhs                   # enter FHS sandbox (GPU, Vulkan, libs)
+run-unreal                   # launch UnrealEditor (auto-detects Vulkan/OpenGL)
+```
+
+### Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `unreal-fhs` | Enter the FHS environment with all system deps |
+| `run-unreal [path] [args]` | Launch UnrealEditor (defaults to `../Engine/Binaries/Linux/UnrealEditor`) |
+| `run-rider` | Launch Rider IDE inside the FHS environment |
+| `vulkan-test` | Quick Vulkan sanity check |
+| `vulkan-diag` | Detailed Vulkan diagnostics |
+| `kill-unreal` | Kill running Unreal processes |
+| `kde-wayland-settings` | Wayland keyboard input workaround info |
+| `refresh-env` | Re-detect GPU and refresh environment variables |
+
+## Perforce on NixOS
+
+The `p4` CLI is included in the FHS environment, so it's available inside `unreal-fhs` without any extra setup.
+
+For Rider's Perforce integration to work, you also need `p4` installed at the **NixOS system level**, since Rider runs outside the FHS sandbox. Add it to your `configuration.nix`:
+
+```nix
+environment.systemPackages = with pkgs; [
+  p4
+];
+```
+
+After every Perforce sync, you'll need to fix execute permissions since P4 doesn't preserve Unix file modes:
+
+```bash
+chmod +x Setup.sh GenerateProjectFiles.sh Engine/Binaries/DotNET/GitDependencies/linux-x64/GitDependencies
+find Engine/Build -name "*.sh" -exec chmod +x {} +
+```
+
 ## Rider IDE Setup
 
 When using JetBrains Rider on Linux, it may auto-detect the `.git` directory and default the VCS integration to Git. If your project uses Perforce:
@@ -49,10 +89,19 @@ When using JetBrains Rider on Linux, it may auto-detect the `.git` directory and
    - **Path to P4 executable:** `/etc/profiles/per-user/<your-user>/bin/p4`
 4. Click **Test Connection** to verify
 
----
+## Debugging Stability
 
-Warning: If you are using Wayland with the Unreal Engine, the Popup keyboard input may not work at all. To find more information and an unsecured but unavoidable workaround, run "kde-wayland-settings".
+`run-unreal` automatically applies these flags: `-ansimalloc -reducethreadusage -limitedmemorypool`
 
+When debugging through Rider, add these same flags manually to **Run/Debug Configuration > Program arguments**, since Rider launches its own UE process.
+
+A cgroup memory limit wrapper is available in `scripts/unreal/run.nix` (commented out) if NixOS earlyoom/OOM isn't catching runaway memory fast enough.
+
+## Known Issues
+
+- **Wayland:** Popup keyboard input may not work. Run `kde-wayland-settings` for workaround info.
+- **X11 forced:** The FHS env sets `GDK_BACKEND=x11`, `QT_QPA_PLATFORM=xcb`, `SDL_VIDEODRIVER=x11`.
+- **Perforce permissions:** P4 doesn't preserve Unix execute bits. See chmod notes in build steps above.
 
 ---
 
