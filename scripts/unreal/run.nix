@@ -51,12 +51,12 @@
      # UE stability flags for debugging
      UE_FLAGS="-ansimalloc -reducethreadusage -limitedmemorypool -nosplash -nocrashreportdialog"
 
-     # Memory cgroup railguard - uncomment if OOM killer isn't catching it fast enough
-     # MEMORY_LIMIT="24G"
-     # SWAP_LIMIT="2G"
-     # systemd-run --user --scope -p MemoryMax="$MEMORY_LIMIT" -p MemorySwapMax="$SWAP_LIMIT" --
+     # Memory cgroup railguard - caps UE so it gets killed cleanly instead of freezing the system
+     MEMORY_LIMIT="48G"
+     SWAP_LIMIT="2G"
 
      # Now we try to run Unreal Engine
-     print_warning "Starting Unreal Engine Editor with $RENDER_OPTION"
-     ${unrealFHSWrapper}/bin/unreal-fhs "cd '$UE_DIR' && ./'$UE_BIN' $RENDER_OPTION $UE_FLAGS $*"
+     print_warning "Starting Unreal Engine Editor with $RENDER_OPTION (memory limit: $MEMORY_LIMIT)"
+     systemd-run --user --scope -p MemoryMax="$MEMORY_LIMIT" -p MemorySwapMax="$SWAP_LIMIT" -- \
+       ${unrealFHSWrapper}/bin/unreal-fhs "cd '$UE_DIR' && ./'$UE_BIN' $RENDER_OPTION $UE_FLAGS $*"
    ''
