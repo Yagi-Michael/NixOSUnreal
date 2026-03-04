@@ -81,6 +81,23 @@ find Engine/Build -name "*.sh" -exec chmod +x {} +
 
 ## Rider IDE Setup
 
+### Increase Heap Size (Required for UE5 Source)
+
+Rider's default 2GB max heap is not enough for indexing UE5 engine source — it will hang on "Loading projects." Create a custom vmoptions file:
+
+**File:** `~/.config/JetBrains/Rider2025.1/rider64.vmoptions`
+
+Copy the defaults from `<rider-install>/bin/rider64.vmoptions` and change:
+
+```
+-Xms2048m    # initial heap (default: 128m)
+-Xmx8192m    # max heap (default: 2048m)
+```
+
+Adjust the version in the path (`Rider2025.1`) to match your Rider version.
+
+### Perforce Integration
+
 When using JetBrains Rider on Linux, it may auto-detect the `.git` directory and default the VCS integration to Git. If your project uses Perforce:
 
 1. Go to **Settings > Version Control > Directory Mappings**
