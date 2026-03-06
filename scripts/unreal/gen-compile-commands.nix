@@ -4,9 +4,10 @@ pkgs.writeScriptBin "gen-compile-commands" ''
   #!${pkgs.stdenv.shell}
   ${lib.banners.colorTheWorld}
 
-  PROJECT="/work/ascent/UE/AscentRivals/AscentRivals.uproject"
-  UBT="/work/ascent/UE/Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll"
-  OUTPUT_DIR="/work/ascent/UE"
+  # Relative paths — expects to be run from UE/flake/
+  UE_ROOT="$(cd .. && pwd)"
+  UBT="$UE_ROOT/Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll"
+  OUTPUT_DIR="$UE_ROOT"
 
   if ! command -v dotnet &> /dev/null; then
     print_error "dotnet not found — run this inside unreal-fhs"
@@ -19,21 +20,27 @@ pkgs.writeScriptBin "gen-compile-commands" ''
     exit 1
   fi
 
-  if [ ! -f "$PROJECT" ]; then
-    print_error "Project file not found: $PROJECT"
+  # Auto-detect .uproject file (find the first one that isn't in Engine/)
+  PROJECT=$(find "$UE_ROOT" -maxdepth 2 -name "*.uproject" ! -path "*/Engine/*" 2>/dev/null | head -1)
+  if [ -z "$PROJECT" ] || [ ! -f "$PROJECT" ]; then
+    print_error "No .uproject file found under $UE_ROOT"
     exit 1
   fi
 
+  PROJECT_NAME=$(basename "$PROJECT" .uproject)
+  TARGET="''${PROJECT_NAME}Editor"
+
   print_banner "Generating compile_commands.json"
-  print_info "Target: AscentRivalsEditor (Development, Linux)"
+  print_info "Target: $TARGET (Development, Linux)"
+  print_info "Project: $PROJECT"
   print_info "Output: $OUTPUT_DIR/compile_commands.json"
   echo ""
 
-  cd /work/ascent/UE
+  cd "$UE_ROOT"
   dotnet "$UBT" \
     -Mode=GenerateClangDatabase \
     -Project="$PROJECT" \
-    AscentRivalsEditor \
+    "$TARGET" \
     Linux \
     Development \
     -OutputDir="$OUTPUT_DIR"

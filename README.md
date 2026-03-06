@@ -11,8 +11,8 @@ NixOS FHS flake/develop env for Unreal Engine.
 # Usage:
 
 ## Build Unreal Engine from sources:
-1. You must have access to Ascent Perforce (Unreal Engine source is included in the depot)
-2. Pull from Ascent Perforce. If following along with your own depot, you can use `git clone git@github.com:EpicGames/UnrealEngine.git --branch release --single-branch`
+1. You must have access to the Unreal Engine source (via Perforce depot or Epic GitHub)
+2. Pull from your Perforce depot, or `git clone git@github.com:EpicGames/UnrealEngine.git --branch release --single-branch`
 3. Inside the `UE/` folder, run `git clone git@github.com:Yagi-Michael/NixOSUnreal.git flake`
 4. `cd flake && nix develop`
 5. `unreal-fhs`
@@ -29,7 +29,7 @@ NixOS FHS flake/develop env for Unreal Engine.
 #### Example structure:
 ```
 UE
-├── AscentRivals       (game project)
+├── <YourProject>      (game project)
 ├── Engine             (engine source)
 ├── flake <---|        Put flake here
 ├── Setup.sh
@@ -101,7 +101,7 @@ Adjust the version in the path (`Rider2025.1`) to match your Rider version.
 When using JetBrains Rider on Linux, it may auto-detect the `.git` directory and default the VCS integration to Git. If your project uses Perforce:
 
 1. Go to **Settings > Version Control > Directory Mappings**
-2. Change the VCS for your project root (e.g. `/work/ascent`) from **Git** to **Perforce**
+2. Change the VCS for your project root from **Git** to **Perforce**
 3. Go to **Settings > Version Control > Perforce** and set:
    - **Server (Port):** `ssl:genun.helixcore.io:1666`
    - **User:** your Perforce username
@@ -118,7 +118,7 @@ These prevent mimalloc-related crashes and reduce memory pressure during debuggi
 ### Rider
 
 1. **Run > Edit Configurations...**
-2. Select your Uproject configuration (e.g. **AscentRivals**)
+2. Select your Uproject configuration
 3. In the **Optional arguments** field, add: `-ansimalloc -reducethreadusage -limitedmemorypool`
 4. Click **Apply**
 
@@ -127,7 +127,7 @@ These prevent mimalloc-related crashes and reduce memory pressure during debuggi
 Debug flags are configured in `.zed/debug.json` (launch config `args` field). The existing launch config already includes the project path — add the stability flags there:
 
 ```json
-"args": ["/work/ascent/UE/AscentRivals/AscentRivals.uproject", "-ansimalloc", "-reducethreadusage", "-limitedmemorypool"]
+"args": ["<path/to/YourProject.uproject>", "-ansimalloc", "-reducethreadusage", "-limitedmemorypool"]
 ```
 
 ### Other IDEs

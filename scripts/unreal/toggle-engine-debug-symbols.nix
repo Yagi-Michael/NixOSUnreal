@@ -4,7 +4,8 @@ pkgs.writeScriptBin "toggle-engine-debug-symbols" ''
   #!${pkgs.stdenv.shell}
   ${lib.banners.colorTheWorld}
 
-  ENGINE_BIN="/work/ascent/UE/Engine/Binaries/Linux"
+  # Relative path — expects to be run from UE/flake/ (same as run-unreal)
+  ENGINE_BIN="../Engine/Binaries/Linux"
   STASH_DIR="$ENGINE_BIN/debug-stash"
 
   if [ ! -d "$ENGINE_BIN" ]; then
